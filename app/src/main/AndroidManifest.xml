@@ -9,6 +9,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity"></activity>
+        <provider
+            android:authorities="com.shipuli.whattodo.todoprovider"
+            android:name="com.shipuli.whattodo.database.TodoContentProvider"
+            android:readPermission="com.shipuli.whattodo.todoprovider.READ_PROVIDER"
+            android:writePermission="com.shipuli.whattodo.todoprovider.WRITE_PROVIDER"></provider>
+        <provider
+            android:authorities="com.shipuli.whattodo.completedprovider"
+            android:name="com.shipuli.whattodo.database.CompletedContentProvider"
+            android:readPermission="com.shipuli.whattodo.completedprovider.READ_PROVIDER"></provider>
     </application>
 
 </manifest>
