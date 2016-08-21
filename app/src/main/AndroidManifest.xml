@@ -1,23 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.shipuli.whattodo">
+    package="com.shipuli.whattodo" >
+
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"></activity>
+        android:theme="@style/AppTheme" >
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".AddTodoActivity" />
         <provider
+            android:name=".database.TodoContentProvider"
             android:authorities="com.shipuli.whattodo.todoprovider"
-            android:name="com.shipuli.whattodo.database.TodoContentProvider"
             android:readPermission="com.shipuli.whattodo.todoprovider.READ_PROVIDER"
-            android:writePermission="com.shipuli.whattodo.todoprovider.WRITE_PROVIDER"></provider>
+            android:writePermission="com.shipuli.whattodo.todoprovider.WRITE_PROVIDER" />
         <provider
+            android:name=".database.CompletedContentProvider"
             android:authorities="com.shipuli.whattodo.completedprovider"
-            android:name="com.shipuli.whattodo.database.CompletedContentProvider"
-            android:readPermission="com.shipuli.whattodo.completedprovider.READ_PROVIDER"></provider>
+            android:readPermission="com.shipuli.whattodo.completedprovider.READ_PROVIDER" />
+
     </application>
 
 </manifest>

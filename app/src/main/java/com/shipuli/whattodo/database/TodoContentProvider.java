@@ -121,7 +121,7 @@ public class TodoContentProvider extends ContentProvider{
         if(selection == null) {
             out = where;
         }else{
-            out = selection + " AND " + where;
+            out = selection + " OR " + where;
         }
         return out;
     }
