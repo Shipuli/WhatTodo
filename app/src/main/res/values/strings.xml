@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">WhatToDo</string>
+    <string name="todo_page_title">Todos</string>
+    <string name="completed_page_title">Completed</string>
+    <string name="title_activity_add_todo">Add Todo</string>
+
+    <string name="add_description">Description</string>
+    <string name="add_deadline">Deadline</string>
+    <string name="add_todo">Add Todo</string>
 </resources>
