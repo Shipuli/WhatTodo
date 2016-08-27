@@ -18,7 +18,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:paddingLeft="@dimen/text_margin"
-            android:textSize="25sp" />
+            android:textSize="@dimen/title_size" />
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="wrap_content"
@@ -27,15 +27,15 @@
             android:orientation="horizontal">
             <ImageButton
                 android:id="@+id/delete_todo"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/btn_size"
+                android:layout_height="@dimen/btn_size"
                 android:backgroundTint="@color/colorRemove"
                 android:background="@drawable/ic_highlight_remove_24dp"
                 />
             <ImageButton
                 android:id="@+id/complete_todo"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/btn_size"
+                android:layout_height="@dimen/btn_size"
                 android:backgroundTint="@color/colorComplete"
                 android:background="@drawable/ic_radio_button_checked_24px"
                 />

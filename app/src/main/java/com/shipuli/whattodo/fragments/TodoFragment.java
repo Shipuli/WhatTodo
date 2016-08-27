@@ -1,50 +1,51 @@
 package com.shipuli.whattodo.fragments;
 
 
-import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.shipuli.whattodo.R;
 import com.shipuli.whattodo.database.TodoContentProvider;
-import com.shipuli.whattodo.database.TodoTable;
+import com.shipuli.whattodo.views.TodoRecycleAdapter;
 
 /**
  * Fragment which displays todo list.
  */
-public class TodoFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class TodoFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    CursorAdapter mAdapter;
+    Cursor mCursor;
+    TodoRecycleAdapter rAdapter;
+    RecyclerView recycler;
+    RecyclerView.LayoutManager lManager;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        mAdapter = new CursorAdapter(getActivity(), null, 2) {
-            @Override
-            public View newView(Context context, Cursor cursor, ViewGroup parent) {
-                return LayoutInflater.from(context).inflate(R.layout.todo_fragment_list_item, parent,
-                        false);
-            }
-
-            @Override
-            public void bindView(View view, Context context, Cursor cursor) {
-                TextView addDesc = (TextView) view.findViewById(R.id.todo_description);
-                String desc = cursor.getString(cursor.getColumnIndexOrThrow(TodoTable.COLUMN_DESCRIPTION));
-                addDesc.setText(desc);
-            }
-        };
-        this.setListAdapter(mAdapter);
         getLoaderManager().initLoader(0, null, this);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.todo_fragment, container, false);
+        recycler = (RecyclerView) root.findViewById(R.id.recycler_list_view);
+        rAdapter = new TodoRecycleAdapter(mCursor);
+        lManager = new LinearLayoutManager(getActivity());
+        recycler.setLayoutManager(lManager);
+        recycler.scrollToPosition(0);
+        recycler.setAdapter(rAdapter);
+
+        return root;
     }
 
     @Override
@@ -54,17 +55,19 @@ public class TodoFragment extends ListFragment implements LoaderManager.LoaderCa
 
     }
 
+    @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new CursorLoader(getContext(), TodoContentProvider.CONTENT_URI,
                 null, null, null, null);
 
     }
-
+    @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data){
-        mAdapter.swapCursor(data);
+        rAdapter.changeCursor(data);
     }
 
+    @Override
     public void onLoaderReset(Loader loader) {
-        mAdapter.swapCursor(null);
+        rAdapter.changeCursor(null);
     }
 }

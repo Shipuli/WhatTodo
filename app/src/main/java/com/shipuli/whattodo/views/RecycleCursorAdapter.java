@@ -1,0 +1,80 @@
+package com.shipuli.whattodo.views;
+
+import android.content.Context;
+import android.database.Cursor;
+import android.database.DataSetObserver;
+import android.support.v7.widget.RecyclerView;
+
+/**
+ * Abstract adapter for linking RecycleView to Cursors
+ */
+public abstract class RecycleCursorAdapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
+
+    private Cursor mCursor;
+    private Boolean mDataValid;
+    private int mRowId;
+
+    public RecycleCursorAdapter(Cursor c) {
+        mCursor = c;
+        mDataValid = mCursor != null;
+        mRowId = mDataValid ? mCursor.getColumnIndex("_id") : -1;
+    }
+
+    public Cursor getCursor(){
+        return mCursor;
+    }
+
+    public abstract void onBindViewHolder(VH viewHolder, Cursor cursor);
+
+    @Override
+    public void onBindViewHolder(VH viewHolder, int pos) {
+        if(!mDataValid){
+            throw new IllegalStateException("RecycleCursorAdapter doesn't have cursor.");
+        }
+        mCursor.moveToPosition(pos);
+        onBindViewHolder(viewHolder, mCursor);
+    }
+
+    @Override
+    public int getItemCount() {
+        return mDataValid ? mCursor.getCount() : 0;
+    }
+
+    @Override
+    public void setHasStableIds(boolean hasStableIds) {
+        super.setHasStableIds(true);
+    }
+
+    @Override
+    public long getItemId(int pos) {
+        if(mDataValid && mCursor.moveToPosition(pos)){
+            return mCursor.getLong(mRowId);
+        }
+        return 0;
+    }
+
+    public void changeCursor(Cursor c) {
+        Cursor old = swapCursor(c);
+        if(old != null) {
+            old.close();
+        }
+    }
+
+    public Cursor swapCursor(Cursor c) {
+        if(c == mCursor){
+            return null;
+        }
+        final Cursor out = mCursor;
+        mCursor = c;
+        if(mCursor != null){
+            mRowId = mCursor.getColumnIndexOrThrow("_id");
+            mDataValid = true;
+            notifyDataSetChanged();
+        }else{
+            mRowId = -1;
+            mDataValid = false;
+        }
+        return out;
+    }
+
+}
