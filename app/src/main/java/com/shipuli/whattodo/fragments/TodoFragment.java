@@ -9,7 +9,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +27,7 @@ public class TodoFragment extends Fragment implements LoaderManager.LoaderCallba
     RecyclerView recycler;
     RecyclerView.LayoutManager lManager;
 
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -39,13 +39,22 @@ public class TodoFragment extends Fragment implements LoaderManager.LoaderCallba
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.todo_fragment, container, false);
         recycler = (RecyclerView) root.findViewById(R.id.recycler_list_view);
-        rAdapter = new TodoRecycleAdapter(mCursor);
-        lManager = new LinearLayoutManager(getActivity());
+        rAdapter = new TodoRecycleAdapter(this, mCursor, getContext());
+        lManager = new LinearLayoutManager(getActivity()){
+            @Override
+            public boolean supportsPredictiveItemAnimations() {
+                return false;
+            }
+        };
         recycler.setLayoutManager(lManager);
         recycler.scrollToPosition(0);
         recycler.setAdapter(rAdapter);
 
         return root;
+    }
+
+    public void updateLoader() {
+        getLoaderManager().restartLoader(0, null, this);
     }
 
     @Override
