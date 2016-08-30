@@ -9,12 +9,15 @@ import com.shipuli.whattodo.R;
 import com.shipuli.whattodo.fragments.CompletedFragment;
 import com.shipuli.whattodo.fragments.TodoFragment;
 
+import java.util.ArrayList;
+
 /**
  * Adapter which connects Fragments to tabs.
  */
 public class TabPagerAdaptor extends FragmentPagerAdapter {
 
-    Context context;
+    private final Context context;
+    private static ArrayList<Fragment> fragments = new ArrayList<>(2);
 
     public TabPagerAdaptor(FragmentManager fm, Context nContext) {
         super(fm);
@@ -29,9 +32,21 @@ public class TabPagerAdaptor extends FragmentPagerAdapter {
     public Fragment getItem(int position){
         switch (position) {
             case 0:
-                return new TodoFragment();
+                try {
+                    return fragments.get(0);
+                }catch (IndexOutOfBoundsException e) {
+                    Fragment nF = new TodoFragment();
+                    fragments.add(0, nF);
+                    return nF;
+                }
             case 1:
-                return new CompletedFragment();
+                try {
+                    return fragments.get(1);
+                }catch (IndexOutOfBoundsException e) {
+                    Fragment nF = new CompletedFragment();
+                    fragments.add(1, nF);
+                    return nF;
+                }
             default:
                 return null;
         }

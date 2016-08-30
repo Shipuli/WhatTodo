@@ -13,7 +13,7 @@ import android.util.Log;
 public class TodoSQLHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "Todo";
+    private static final String DATABASE_NAME = "Todo";
 
     TodoSQLHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

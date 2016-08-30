@@ -42,7 +42,7 @@ public class TodoProviderTest extends ProviderTestCase2<TodoContentProvider> {
         ContentValues nTodo = new ContentValues();
         nTodo.put(TodoTable.COLUMN_DESCRIPTION, "mock data");
         nTodo.put(TodoTable.COLUMN_DEADLINE, "mock deadline");
-        Uri nUri = resolver.insert(TodoContentProvider.CONTENT_URI, nTodo);
+        resolver.insert(TodoContentProvider.CONTENT_URI, nTodo);
     }
 
     @Test

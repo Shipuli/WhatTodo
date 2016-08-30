@@ -20,12 +20,12 @@ import com.shipuli.whattodo.views.TodoRecycleAdapter;
 /**
  * Fragment which displays todo list.
  */
-public class TodoFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class TodoFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, TabLifecycle{
 
-    Cursor mCursor;
-    TodoRecycleAdapter rAdapter;
-    RecyclerView recycler;
-    RecyclerView.LayoutManager lManager;
+    private Cursor mCursor;
+    private TodoRecycleAdapter rAdapter;
+    private RecyclerView recycler;
+    private RecyclerView.LayoutManager lManager;
 
 
     @Override
@@ -38,7 +38,7 @@ public class TodoFragment extends Fragment implements LoaderManager.LoaderCallba
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.todo_fragment, container, false);
-        recycler = (RecyclerView) root.findViewById(R.id.recycler_list_view);
+        recycler = (RecyclerView) root.findViewById(R.id.todo_list_view);
         rAdapter = new TodoRecycleAdapter(this, mCursor, getContext());
         lManager = new LinearLayoutManager(getActivity()){
             @Override
@@ -53,7 +53,7 @@ public class TodoFragment extends Fragment implements LoaderManager.LoaderCallba
         return root;
     }
 
-    public void updateLoader() {
+    public void onResumeFragment(){
         getLoaderManager().restartLoader(0, null, this);
     }
 
@@ -61,7 +61,6 @@ public class TodoFragment extends Fragment implements LoaderManager.LoaderCallba
     public void onResume(){
         super.onResume();
         getLoaderManager().restartLoader(0, null, this);
-
     }
 
     @Override

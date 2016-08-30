@@ -29,15 +29,21 @@
                 android:id="@+id/delete_todo"
                 android:layout_width="@dimen/btn_size"
                 android:layout_height="@dimen/btn_size"
-                android:backgroundTint="@color/colorRemove"
-                android:background="@drawable/ic_highlight_remove_24dp"
+                android:adjustViewBounds="true"
+                android:padding="5dp"
+                android:layout_marginLeft="@dimen/text_margin"
+                android:src="@drawable/ic_highlight_remove_24dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 />
             <ImageButton
                 android:id="@+id/complete_todo"
                 android:layout_width="@dimen/btn_size"
                 android:layout_height="@dimen/btn_size"
-                android:backgroundTint="@color/colorComplete"
-                android:background="@drawable/ic_radio_button_checked_24px"
+                android:adjustViewBounds="true"
+                android:padding="5dp"
+                android:layout_marginLeft="@dimen/text_margin"
+                android:src="@drawable/ic_radio_button_checked_24px"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 />
         </LinearLayout>
     </RelativeLayout>

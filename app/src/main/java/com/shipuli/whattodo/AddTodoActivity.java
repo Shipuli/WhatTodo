@@ -33,7 +33,7 @@ public class AddTodoActivity extends Activity {
                 nTodo.put(TodoTable.COLUMN_DESCRIPTION, addDesc.getText().toString());
                 nTodo.put(TodoTable.COLUMN_DEADLINE, addDead.getText().toString());
 
-                Uri nUri = getContentResolver().insert(TodoContentProvider.CONTENT_URI, nTodo);
+                getContentResolver().insert(TodoContentProvider.CONTENT_URI, nTodo);
                 finish();
             }
         });

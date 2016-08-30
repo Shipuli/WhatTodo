@@ -1,11 +1,7 @@
 package com.shipuli.whattodo.views;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.content.ContentProvider;
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v4.app.LoaderManager;
 import android.support.v7.widget.RecyclerView;
 
 /**
@@ -30,7 +26,7 @@ public abstract class RecycleCursorAdapter<VH extends RecyclerView.ViewHolder> e
         return mCursor;
     }
 
-    public abstract void onBindViewHolder(VH viewHolder, Cursor cursor, int pos);
+    protected abstract void onBindViewHolder(VH viewHolder, Cursor cursor, int pos);
 
     @Override
     public void onBindViewHolder(VH viewHolder, int pos) {
@@ -66,7 +62,7 @@ public abstract class RecycleCursorAdapter<VH extends RecyclerView.ViewHolder> e
         }
     }
 
-    public Cursor swapCursor(Cursor c) {
+    private Cursor swapCursor(Cursor c) {
         if(c == mCursor){
             return null;
         }

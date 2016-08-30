@@ -25,10 +25,6 @@
             android:authorities="com.shipuli.whattodo.todoprovider"
             android:readPermission="com.shipuli.whattodo.todoprovider.READ_PROVIDER"
             android:writePermission="com.shipuli.whattodo.todoprovider.WRITE_PROVIDER" />
-        <provider
-            android:name=".database.CompletedContentProvider"
-            android:authorities="com.shipuli.whattodo.completedprovider"
-            android:readPermission="com.shipuli.whattodo.completedprovider.READ_PROVIDER" />
 
     </application>
 
