@@ -22,6 +22,7 @@ import com.shipuli.whattodo.database.TodoTable;
 import com.shipuli.whattodo.fragments.TodoFragment;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Adapter for RecycleView
@@ -29,6 +30,13 @@ import java.util.ArrayList;
 public class TodoRecycleAdapter extends RecycleCursorAdapter<TodoRecycleAdapter.TodoHolder> {
 
     private final TodoFragment mContainer;
+    private final String[] compliments = {
+            "Great Job!",
+            "Good going!",
+            "Ayyyyyyyy!",
+            "That's the spirit!",
+            "Getting stuff done!"
+    };
 
     public TodoRecycleAdapter(TodoFragment container, Cursor c, Context context) {
         super(context, c);
@@ -74,6 +82,9 @@ public class TodoRecycleAdapter extends RecycleCursorAdapter<TodoRecycleAdapter.
 
         try {
             mContext.getContentResolver().applyBatch(TodoContentProvider.AUTHORITY, ops);
+            String t = compliments[new Random().nextInt(compliments.length)];
+            Toast toast = Toast.makeText(mContext, t, Toast.LENGTH_SHORT);
+            toast.show();
         }catch (RemoteException e){
 
         }catch (OperationApplicationException e){
