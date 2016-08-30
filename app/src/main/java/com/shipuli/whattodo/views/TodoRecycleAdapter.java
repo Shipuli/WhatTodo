@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.shipuli.whattodo.R;
 import com.shipuli.whattodo.database.CompletedTable;
@@ -64,11 +65,13 @@ public class TodoRecycleAdapter extends RecycleCursorAdapter<TodoRecycleAdapter.
         Cursor inserted = getCursor();
         int real = (int) getItemId(pos);
         inserted.moveToPosition(pos);
+
         ops.add(ContentProviderOperation.newDelete(Uri.parse(TodoContentProvider.CONTENT_URI +
                 "/" + real)).build());
         ops.add(ContentProviderOperation.newInsert(TodoContentProvider.CONTENT_URI2)
                 .withValue(CompletedTable.COLUMN_DESCRIPTION, inserted.getString(
                         inserted.getColumnIndexOrThrow(TodoTable.COLUMN_DESCRIPTION))).build());
+
         try {
             mContext.getContentResolver().applyBatch(TodoContentProvider.AUTHORITY, ops);
         }catch (RemoteException e){
