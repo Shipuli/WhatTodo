@@ -46,13 +46,11 @@ public class TodoRecycleAdapter extends RecycleCursorAdapter<TodoRecycleAdapter.
     //ViewHolder for TodoRecycleView
     public static class TodoHolder extends RecyclerView.ViewHolder{
         private final TextView description;
-        private final ImageButton deleteButton;
         private final ImageButton completeButton;
 
         public TodoHolder(View v) {
             super(v);
             description = (TextView) v.findViewById(R.id.todo_description);
-            deleteButton = (ImageButton) v.findViewById(R.id.delete_todo);
             completeButton = (ImageButton) v.findViewById(R.id.complete_todo);
         }
 
@@ -61,7 +59,7 @@ public class TodoRecycleAdapter extends RecycleCursorAdapter<TodoRecycleAdapter.
         }
     }
 
-    private void removeItem(int pos) {
+    public void removeItem(int pos) {
         int real = (int) getItemId(pos);
         mContext.getContentResolver().delete(Uri.parse(TodoContentProvider.CONTENT_URI + "/" + real),
                 null, null);
@@ -102,12 +100,6 @@ public class TodoRecycleAdapter extends RecycleCursorAdapter<TodoRecycleAdapter.
 
     public void onBindViewHolder(TodoHolder vh, Cursor c, final int pos) {
         vh.bindTodo(c);
-        vh.deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                removeItem(pos);
-            }
-        });
         vh.completeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

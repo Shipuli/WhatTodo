@@ -62,10 +62,6 @@ TabLifecycle{
         getLoaderManager().restartLoader(1, null, this);
     }
 
-    public void updateData(){
-        getLoaderManager().restartLoader(1, null, this);
-    }
-
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new CursorLoader(getContext(), TodoContentProvider.CONTENT_URI2,

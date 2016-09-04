@@ -26,16 +26,6 @@
             android:layout_alignParentRight="true"
             android:orientation="horizontal">
             <ImageButton
-                android:id="@+id/delete_todo"
-                android:layout_width="@dimen/btn_size"
-                android:layout_height="@dimen/btn_size"
-                android:adjustViewBounds="true"
-                android:padding="5dp"
-                android:layout_marginLeft="@dimen/text_margin"
-                android:src="@drawable/ic_highlight_remove_24dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                />
-            <ImageButton
                 android:id="@+id/complete_todo"
                 android:layout_width="@dimen/btn_size"
                 android:layout_height="@dimen/btn_size"
