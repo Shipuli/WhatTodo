@@ -33,9 +33,6 @@ public class TodoFragment extends Fragment implements LoaderManager.LoaderCallba
 
     private Cursor mCursor;
     private TodoRecycleAdapter rAdapter;
-    private RecyclerView recycler;
-    private RecyclerView.LayoutManager lManager;
-
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -49,9 +46,9 @@ public class TodoFragment extends Fragment implements LoaderManager.LoaderCallba
         View root = inflater.inflate(R.layout.todo_fragment, container, false);
 
         //Initiate recycleview
-        recycler = (RecyclerView) root.findViewById(R.id.todo_list_view);
+        RecyclerView recycler = (RecyclerView) root.findViewById(R.id.todo_list_view);
         rAdapter = new TodoRecycleAdapter(this, mCursor, getContext());
-        lManager = new LinearLayoutManager(getActivity()){
+        RecyclerView.LayoutManager lManager = new LinearLayoutManager(getActivity()){
             @Override
             public boolean supportsPredictiveItemAnimations() {
                 return false;
@@ -61,14 +58,16 @@ public class TodoFragment extends Fragment implements LoaderManager.LoaderCallba
         recycler.scrollToPosition(0);
         recycler.setAdapter(rAdapter);
 
-        //Swipe delete
+        //ItemTouchHelper that implements animation and functionality to delete by swiping
+        //Src:https://github.com/nemanja-kovacevic/recycler-view-swipe-to-delete/blob/master/app/
+        //    src/main/java/net/nemanjakovacevic/recyclerviewswipetodelete/MainActivity.java
         ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.RIGHT){
 
             Drawable background;
             Drawable logo;
             Boolean initiated = false;
-            int margin = 10;
+            final int margin = 10;
 
             private void init() {
                 background = new ColorDrawable(Color.RED);
@@ -96,18 +95,19 @@ public class TodoFragment extends Fragment implements LoaderManager.LoaderCallba
                 if(!initiated){
                     init();
                 }
+
+                //Draw red background
                 int transparency = (int) dX / 3;
                 transparency = transparency < 255 ? transparency : 255;
-
                 background.setAlpha(transparency);
                 background.setBounds(i.getLeft(), i.getTop() + margin , i.getLeft() + (int) dX,
                         i.getBottom() - margin);
                 background.draw(c);
 
+                //Draw trash can -icon
                 int itemHeight = i.getBottom() - i.getTop();
                 int intrinsicWidth = logo.getIntrinsicWidth();
                 int intrinsicHeight = logo.getIntrinsicHeight();
-
                 int tL = i.getLeft() + margin;
                 int tR = i.getLeft() + margin + intrinsicWidth;
                 int tT = i.getTop() + (itemHeight - intrinsicHeight)/2;
@@ -115,6 +115,7 @@ public class TodoFragment extends Fragment implements LoaderManager.LoaderCallba
                 logo.setBounds(tL, tT, tR, tB);
                 logo.draw(c);
 
+                //Draw Delete-text
                 Paint pain = new Paint();
                 int tS = 58;
                 pain.setColor(Color.WHITE);
@@ -140,6 +141,13 @@ public class TodoFragment extends Fragment implements LoaderManager.LoaderCallba
         super.onResume();
         getLoaderManager().restartLoader(0, null, this);
     }
+
+    /*
+    The next 3 functions implement LoaderCallbacks
+    onCreateLoader: Creates CursorLoader
+    onLoadFinish: Updates data
+    onLoaderReset: Updates view when Loader is reset
+     */
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {

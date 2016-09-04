@@ -23,8 +23,6 @@ public class CompletedFragment extends Fragment implements LoaderManager.LoaderC
 TabLifecycle{
     private Cursor mCursor;
     private CompletedRecycleAdapter rAdapter;
-    private RecyclerView recycler;
-    private RecyclerView.LayoutManager lManager;
 
 
     @Override
@@ -37,9 +35,9 @@ TabLifecycle{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.completed_fragment, container, false);
-        recycler = (RecyclerView) root.findViewById(R.id.completed_list_view);
+        RecyclerView recycler = (RecyclerView) root.findViewById(R.id.completed_list_view);
         rAdapter = new CompletedRecycleAdapter(this, mCursor, getContext());
-        lManager = new LinearLayoutManager(getActivity()){
+        RecyclerView.LayoutManager lManager = new LinearLayoutManager(getActivity()){
             @Override
             public boolean supportsPredictiveItemAnimations() {
                 return false;
@@ -52,6 +50,7 @@ TabLifecycle{
         return root;
     }
 
+    //Lifecycle-method that works in tab layout
     public void onResumeFragment(){
         getLoaderManager().restartLoader(1, null, this);
     }
@@ -61,6 +60,13 @@ TabLifecycle{
         super.onResume();
         getLoaderManager().restartLoader(1, null, this);
     }
+
+    /*
+    The next 3 functions implement LoaderCallbacks
+    onCreateLoader: Creates CursorLoader
+    onLoadFinish: Updates data
+    onLoaderReset: Updates view when Loader is reset
+     */
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {

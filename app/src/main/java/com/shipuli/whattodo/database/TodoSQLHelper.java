@@ -10,7 +10,7 @@ import android.util.Log;
  * Implements methods to create and upgrade the database and defines constants needed for
  * using it.
  */
-public class TodoSQLHelper extends SQLiteOpenHelper {
+class TodoSQLHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "Todo";

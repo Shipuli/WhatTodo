@@ -34,6 +34,7 @@
                 android:layout_marginLeft="@dimen/text_margin"
                 android:src="@drawable/ic_radio_button_checked_24px"
                 android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Complete Button"
                 />
         </LinearLayout>
     </RelativeLayout>

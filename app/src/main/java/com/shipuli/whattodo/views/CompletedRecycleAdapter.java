@@ -41,6 +41,7 @@ public class CompletedRecycleAdapter extends RecycleCursorAdapter<CompletedRecyc
         }
     }
 
+    //Function that deletes item permanently
     private void deleteItem(int pos) {
         int real = (int) getItemId(pos);
         mContext.getContentResolver().delete(Uri.parse(TodoContentProvider.CONTENT_URI2 + "/" + real),

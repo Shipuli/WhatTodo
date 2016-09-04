@@ -3,12 +3,9 @@ package com.shipuli.whattodo;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
 import com.shipuli.whattodo.fragments.TabLifecycle;
@@ -25,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
         final TabPagerAdaptor pagerAdapter = new TabPagerAdaptor(getSupportFragmentManager(),
                 getApplicationContext());
         viewPager.setAdapter(pagerAdapter);
+
+        //We add listener to the viewPager so that we can update fragments when user changes tab
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -44,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
+        //Initiate AddTodo-Button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

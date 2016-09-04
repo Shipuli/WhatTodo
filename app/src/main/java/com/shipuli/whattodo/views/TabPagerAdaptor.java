@@ -32,6 +32,8 @@ public class TabPagerAdaptor extends FragmentPagerAdapter {
     public Fragment getItem(int position){
         switch (position) {
             case 0:
+                //Because we don't want to create new fragment every time this is called
+                // we do some caching
                 try {
                     return fragments.get(0);
                 }catch (IndexOutOfBoundsException e) {

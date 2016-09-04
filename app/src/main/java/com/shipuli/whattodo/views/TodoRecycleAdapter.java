@@ -59,6 +59,7 @@ public class TodoRecycleAdapter extends RecycleCursorAdapter<TodoRecycleAdapter.
         }
     }
 
+    //Function that deletes item permanently
     public void removeItem(int pos) {
         int real = (int) getItemId(pos);
         mContext.getContentResolver().delete(Uri.parse(TodoContentProvider.CONTENT_URI + "/" + real),
@@ -66,12 +67,14 @@ public class TodoRecycleAdapter extends RecycleCursorAdapter<TodoRecycleAdapter.
         mContainer.getLoaderManager().restartLoader(0, null, mContainer);
     }
 
+    //Function that makes item completed
     private void completeItem(int pos) {
         ArrayList<ContentProviderOperation> ops = new ArrayList<>();
         Cursor inserted = getCursor();
         int real = (int) getItemId(pos);
         inserted.moveToPosition(pos);
 
+        //Database transaction that deletes item from TodoTable and inserts it to CompleteTable
         ops.add(ContentProviderOperation.newDelete(Uri.parse(TodoContentProvider.CONTENT_URI +
                 "/" + real)).build());
         ops.add(ContentProviderOperation.newInsert(TodoContentProvider.CONTENT_URI2)
