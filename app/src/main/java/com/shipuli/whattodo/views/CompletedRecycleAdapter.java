@@ -15,6 +15,9 @@ import com.shipuli.whattodo.database.CompletedTable;
 import com.shipuli.whattodo.database.TodoContentProvider;
 import com.shipuli.whattodo.fragments.CompletedFragment;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Adapter for Complete Fragment
  */
@@ -28,16 +31,22 @@ public class CompletedRecycleAdapter extends RecycleCursorAdapter<CompletedRecyc
 
     public class CompletedHolder extends RecyclerView.ViewHolder {
         private final TextView description;
+        private final TextView date;
         private final ImageButton deleteButton;
 
         public CompletedHolder(View v) {
             super(v);
             description = (TextView) v.findViewById(R.id.completed_description);
+            date = (TextView) v.findViewById(R.id.complete_date);
             deleteButton = (ImageButton) v.findViewById(R.id.delete_complete);
         }
 
         public void bindCompleted(Cursor c) {
+            Date d = new Date(c.getLong(c.getColumnIndexOrThrow(CompletedTable.COLUMN_FINISHED)));
+            SimpleDateFormat f = new SimpleDateFormat("dd.MM.yyyy");
+
             description.setText(c.getString(c.getColumnIndexOrThrow(CompletedTable.COLUMN_DESCRIPTION)));
+            date.setText(f.format(d));
         }
     }
 
