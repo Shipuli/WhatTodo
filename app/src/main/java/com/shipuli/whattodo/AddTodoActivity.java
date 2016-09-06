@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -14,6 +15,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.shipuli.whattodo.database.TodoContentProvider;
 import com.shipuli.whattodo.database.TodoTable;
@@ -38,12 +40,13 @@ public class AddTodoActivity extends Activity {
         final EditText addDesc = (EditText) findViewById(R.id.add_description);
         final EditText addDead = (EditText) findViewById(R.id.add_deadline);
 
+        //Submit button setup
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ContentValues nTodo = new ContentValues();
                 //process values
-                nTodo.put(TodoTable.COLUMN_DESCRIPTION, addDesc.getText().toString());
+                nTodo.put(TodoTable.COLUMN_DESCRIPTION, addDesc.getText().toString().trim());
                 SimpleDateFormat parser = new SimpleDateFormat("H:mm dd.MM.yyyy");
                 parser.setLenient(false);
                 long deadline;
@@ -65,7 +68,7 @@ public class AddTodoActivity extends Activity {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
                 if(keyEvent.getAction() == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_ENTER) {
-                    hideSoftKeyboard();
+                    hideSoftKeyboard(view);
                     addDead.requestFocus();
                     return true;
                 }
@@ -76,10 +79,19 @@ public class AddTodoActivity extends Activity {
             @Override
             public void onFocusChange(View view, boolean b) {
                 if(!b){
-                    hideSoftKeyboard();
+                    hideSoftKeyboard(view);
                 }
             }
         });
+        LinearLayout l = (LinearLayout) addDesc.getParent();
+        l.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                hideSoftKeyboard(view);
+                return false;
+            }
+        });
+
 
         //Listeners to deadline field which open date picker dialog
         addDead.setOnClickListener(new View.OnClickListener() {
@@ -105,14 +117,10 @@ public class AddTodoActivity extends Activity {
         fragment.show(getFragmentManager(), "datePicker");
     }
 
-    public void hideSoftKeyboard() {
+    public void hideSoftKeyboard(@NonNull View v) {
         InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(
                 Activity.INPUT_METHOD_SERVICE);
-        try {
-            inputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
-        }catch(NullPointerException e){
-            Log.d(this.getClass().getName(), "Cannot close keyboard");
-        }
+        inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
 
