@@ -5,9 +5,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.OperationApplicationException;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.RemoteException;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +27,7 @@ import com.shipuli.whattodo.fragments.TodoFragment;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Adapter for RecycleView
@@ -47,16 +51,58 @@ public class TodoRecycleAdapter extends RecycleCursorAdapter<TodoRecycleAdapter.
     //ViewHolder for TodoRecycleView
     public static class TodoHolder extends RecyclerView.ViewHolder{
         private final TextView description;
+        private final TextView deadline;
         private final ImageButton completeButton;
 
         public TodoHolder(View v) {
             super(v);
             description = (TextView) v.findViewById(R.id.todo_description);
+            deadline = (TextView) v.findViewById(R.id.todo_deadline);
             completeButton = (ImageButton) v.findViewById(R.id.complete_todo);
         }
 
         public void bindTodo(Cursor todo) {
             description.setText(todo.getString(todo.getColumnIndexOrThrow(TodoTable.COLUMN_DESCRIPTION)));
+            Date present = new Date();
+            long dedis = todo.getLong(todo.getColumnIndexOrThrow(TodoTable.COLUMN_DEADLINE));
+            if(dedis != 0) {
+                long until = ( dedis - present.getTime() ) / DateUtils.MINUTE_IN_MILLIS;
+                if(until < 0){
+                    deadline.setTextColor(ContextCompat.getColor(mContext, R.color.colorRemove));
+                    deadline.setText("Deadline: Missed");
+                    return;
+                }
+                String remaining = timeRemaining(until);
+                if(remaining.contains("d")){
+                    deadline.setTextColor(ContextCompat.getColor(mContext, R.color.colorComplete));
+                }else if(remaining.contains("h")){
+                    deadline.setTextColor(ContextCompat.getColor(mContext, R.color.colorMedium));
+                }else{
+                    deadline.setTextColor(ContextCompat.getColor(mContext, R.color.colorRemove));
+                }
+                deadline.setText("Deadline: " + remaining);
+            }else{
+                deadline.setTextColor(ContextCompat.getColor(mContext, R.color.colorComplete));
+                deadline.setText("No hurry!");
+            }
+        }
+        //Helper function that constructs the remaining string
+        public String timeRemaining(long until) {
+            String date = "";
+            date += (until % 60) + "min";
+            until /= 60;
+            if(until >= 1) {
+                date = (until % 24) + "h " + date;
+                until /= 24;
+                if(until >= 1) {
+                    date = (until % 30) + "d " + date;
+                    until /= 30;
+                    if(until >= 1) {
+                        date = (until % 365) + "y " + date;
+                    }
+                }
+            }
+            return date;
         }
     }
 
