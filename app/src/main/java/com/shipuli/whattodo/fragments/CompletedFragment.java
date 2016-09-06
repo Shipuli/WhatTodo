@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.shipuli.whattodo.R;
+import com.shipuli.whattodo.database.CompletedTable;
 import com.shipuli.whattodo.database.TodoContentProvider;
 import com.shipuli.whattodo.views.CompletedRecycleAdapter;
 
@@ -71,7 +72,7 @@ TabLifecycle{
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new CursorLoader(getContext(), TodoContentProvider.CONTENT_URI2,
-                null, null, null, null);
+                null, null, null, CompletedTable.COLUMN_FINISHED + " DESC");
 
     }
     @Override
