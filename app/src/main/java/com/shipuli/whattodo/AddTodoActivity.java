@@ -52,6 +52,7 @@ public class AddTodoActivity extends Activity {
                     nTodo.put(TodoTable.COLUMN_DEADLINE, deadline);
                 }catch(ParseException e){
                     Log.d(getClass().getName(), "Unable to parse deadline.");
+                    nTodo.put(TodoTable.COLUMN_DEADLINE, Long.MAX_VALUE);
                 }
                 //insert values
                 getContentResolver().insert(TodoContentProvider.CONTENT_URI, nTodo);

@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 
 import com.shipuli.whattodo.R;
 import com.shipuli.whattodo.database.TodoContentProvider;
+import com.shipuli.whattodo.database.TodoTable;
 import com.shipuli.whattodo.views.TodoRecycleAdapter;
 
 /**
@@ -152,7 +153,7 @@ public class TodoFragment extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new CursorLoader(getContext(), TodoContentProvider.CONTENT_URI,
-                null, null, null, null);
+                null, null, null, TodoTable.COLUMN_DEADLINE + " ASC");
 
     }
     @Override

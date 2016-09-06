@@ -65,7 +65,7 @@ public class TodoRecycleAdapter extends RecycleCursorAdapter<TodoRecycleAdapter.
             description.setText(todo.getString(todo.getColumnIndexOrThrow(TodoTable.COLUMN_DESCRIPTION)));
             Date present = new Date();
             long dedis = todo.getLong(todo.getColumnIndexOrThrow(TodoTable.COLUMN_DEADLINE));
-            if(dedis != 0) {
+            if(dedis != Long.MAX_VALUE) {
                 long until = ( dedis - present.getTime() ) / DateUtils.MINUTE_IN_MILLIS;
                 if(until < 0){
                     deadline.setTextColor(ContextCompat.getColor(mContext, R.color.colorRemove));
